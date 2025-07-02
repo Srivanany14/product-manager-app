@@ -1,0 +1,10 @@
+{
+  "name": "inventory-lambda-functions",
+  "version": "1.0.0",
+  "description": "Lambda functions for inventory management",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1400.0",
+    "csv-parser": "^3.0.0"
+  }
+}

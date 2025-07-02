@@ -1,0 +1,938 @@
+{
+ "Description": "Inventory Management System with Time-LLM AI Forecasting",
+ "Resources": {
+  "InventoryDataBucket1B7C2A3C": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "POST",
+        "PUT"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ]
+      }
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "AWS-CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InventoryManagement"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryDataBucket/Resource"
+   }
+  },
+  "ProductsTable241ADBFF": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "productId",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "timestamp",
+      "KeyType": "RANGE"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "productId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "timestamp",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "TableName": "inventory-products",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "AWS-CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InventoryManagement"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/ProductsTable/Resource"
+   }
+  },
+  "SalesDataTable497C4A8D": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "productId",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "date",
+      "KeyType": "RANGE"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "productId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "date",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "TableName": "inventory-sales-data",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "AWS-CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InventoryManagement"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/SalesDataTable/Resource"
+   }
+  },
+  "ForecastsTable40A833D2": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "productId",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "forecastDate",
+      "KeyType": "RANGE"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "productId",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "forecastDate",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "TableName": "inventory-forecasts",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "AWS-CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InventoryManagement"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/ForecastsTable/Resource"
+   }
+  },
+  "InventoryUserPoolF7E4D9E8": {
+   "Type": "AWS::Cognito::UserPool",
+   "Properties": {
+    "AccountRecoverySetting": {
+     "RecoveryMechanisms": [
+      {
+       "Name": "verified_phone_number",
+       "Priority": 1
+      },
+      {
+       "Name": "verified_email",
+       "Priority": 2
+      }
+     ]
+    },
+    "AdminCreateUserConfig": {
+     "AllowAdminCreateUserOnly": false
+    },
+    "AutoVerifiedAttributes": [
+     "email"
+    ],
+    "EmailVerificationMessage": "The verification code to your new account is {####}",
+    "EmailVerificationSubject": "Verify your new account",
+    "SmsVerificationMessage": "The verification code to your new account is {####}",
+    "UsernameAttributes": [
+     "email"
+    ],
+    "UserPoolName": "inventory-users",
+    "UserPoolTags": {
+     "ManagedBy": "AWS-CDK",
+     "Project": "InventoryManagement"
+    },
+    "VerificationMessageTemplate": {
+     "DefaultEmailOption": "CONFIRM_WITH_CODE",
+     "EmailMessage": "The verification code to your new account is {####}",
+     "EmailSubject": "Verify your new account",
+     "SmsMessage": "The verification code to your new account is {####}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryUserPool/Resource"
+   }
+  },
+  "InventoryUserPoolClient636B9E9A": {
+   "Type": "AWS::Cognito::UserPoolClient",
+   "Properties": {
+    "UserPoolId": {
+     "Ref": "InventoryUserPoolF7E4D9E8"
+    },
+    "AllowedOAuthFlows": [
+     "implicit",
+     "code"
+    ],
+    "AllowedOAuthFlowsUserPoolClient": true,
+    "AllowedOAuthScopes": [
+     "profile",
+     "phone",
+     "email",
+     "openid",
+     "aws.cognito.signin.user.admin"
+    ],
+    "CallbackURLs": [
+     "https://example.com"
+    ],
+    "ExplicitAuthFlows": [
+     "ALLOW_USER_PASSWORD_AUTH",
+     "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+     "ALLOW_USER_SRP_AUTH",
+     "ALLOW_REFRESH_TOKEN_AUTH"
+    ],
+    "SupportedIdentityProviders": [
+     "COGNITO"
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryUserPoolClient/Resource"
+   }
+  },
+  "LambdaExecutionRoleD5C26073": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": "dynamodb:*",
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::GetAtt": [
+            "ForecastsTable40A833D2",
+            "Arn"
+           ]
+          },
+          {
+           "Fn::GetAtt": [
+            "ProductsTable241ADBFF",
+            "Arn"
+           ]
+          },
+          {
+           "Fn::GetAtt": [
+            "SalesDataTable497C4A8D",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "DynamoDBPolicy"
+     },
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": "s3:*",
+         "Effect": "Allow",
+         "Resource": [
+          {
+           "Fn::GetAtt": [
+            "InventoryDataBucket1B7C2A3C",
+            "Arn"
+           ]
+          },
+          {
+           "Fn::Join": [
+            "",
+            [
+             {
+              "Fn::GetAtt": [
+               "InventoryDataBucket1B7C2A3C",
+               "Arn"
+              ]
+             },
+             "/*"
+            ]
+           ]
+          }
+         ]
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "S3Policy"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "AWS-CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InventoryManagement"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/LambdaExecutionRole/Resource"
+   }
+  },
+  "ProductsFunctionFE1C163A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-396468675993-us-east-1",
+     "S3Key": "43c2c8bc5a3c1d668d020f1336772f5be7f0aa17a22c384e7f34b9b3a8b82241.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaExecutionRoleD5C26073",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "Variables": {
+      "PRODUCTS_TABLE": {
+       "Ref": "ProductsTable241ADBFF"
+      },
+      "SALES_DATA_TABLE": {
+       "Ref": "SalesDataTable497C4A8D"
+      }
+     }
+    },
+    "Handler": "products.handler",
+    "Runtime": "nodejs18.x",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "AWS-CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InventoryManagement"
+     }
+    ]
+   },
+   "DependsOn": [
+    "LambdaExecutionRoleD5C26073"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/ProductsFunction/Resource",
+    "aws:asset:path": "asset.43c2c8bc5a3c1d668d020f1336772f5be7f0aa17a22c384e7f34b9b3a8b82241",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "InventoryApi49B09E7D": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "Inventory Management API",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "AWS-CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InventoryManagement"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Resource"
+   }
+  },
+  "InventoryApiCloudWatchRoleA9D47253": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "AWS-CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InventoryManagement"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/CloudWatchRole/Resource"
+   }
+  },
+  "InventoryApiAccount7172A26A": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "InventoryApiCloudWatchRoleA9D47253",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "InventoryApi49B09E7D"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Account"
+   }
+  },
+  "InventoryApiDeployment382203FBe7a939fb39143971db63948e31d94628": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "InventoryApi49B09E7D"
+    },
+    "Description": "Automatically created by the RestApi construct"
+   },
+   "DependsOn": [
+    "InventoryApiOPTIONS9CCF6FDB",
+    "InventoryApiproductsGETAA5A341C",
+    "InventoryApiproductsOPTIONS2133D49F",
+    "InventoryApiproductsPOST33EBF6B4",
+    "InventoryApiproductsB0A4F9FA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Deployment/Resource"
+   }
+  },
+  "InventoryApiDeploymentStageprod5D1FE13B": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "RestApiId": {
+     "Ref": "InventoryApi49B09E7D"
+    },
+    "DeploymentId": {
+     "Ref": "InventoryApiDeployment382203FBe7a939fb39143971db63948e31d94628"
+    },
+    "StageName": "prod",
+    "Tags": [
+     {
+      "Key": "ManagedBy",
+      "Value": "AWS-CDK"
+     },
+     {
+      "Key": "Project",
+      "Value": "InventoryManagement"
+     }
+    ]
+   },
+   "DependsOn": [
+    "InventoryApiAccount7172A26A"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "InventoryApiOPTIONS9CCF6FDB": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "OPTIONS",
+    "ResourceId": {
+     "Fn::GetAtt": [
+      "InventoryApi49B09E7D",
+      "RootResourceId"
+     ]
+    },
+    "RestApiId": {
+     "Ref": "InventoryApi49B09E7D"
+    },
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Default/OPTIONS/Resource"
+   }
+  },
+  "InventoryApiproductsB0A4F9FA": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "InventoryApi49B09E7D",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "products",
+    "RestApiId": {
+     "Ref": "InventoryApi49B09E7D"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Default/products/Resource"
+   }
+  },
+  "InventoryApiproductsOPTIONS2133D49F": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "OPTIONS",
+    "ResourceId": {
+     "Ref": "InventoryApiproductsB0A4F9FA"
+    },
+    "RestApiId": {
+     "Ref": "InventoryApi49B09E7D"
+    },
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,Authorization'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+       },
+       "StatusCode": "204"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "204"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Default/products/OPTIONS/Resource"
+   }
+  },
+  "InventoryApiproductsGETApiPermissionInventoryManagementStackInventoryApi41164A0CGETproductsBE86ABFA": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ProductsFunctionFE1C163A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:396468675993:",
+       {
+        "Ref": "InventoryApi49B09E7D"
+       },
+       "/",
+       {
+        "Ref": "InventoryApiDeploymentStageprod5D1FE13B"
+       },
+       "/GET/products"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Default/products/GET/ApiPermission.InventoryManagementStackInventoryApi41164A0C.GET..products"
+   }
+  },
+  "InventoryApiproductsGETApiPermissionTestInventoryManagementStackInventoryApi41164A0CGETproducts79813549": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ProductsFunctionFE1C163A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:396468675993:",
+       {
+        "Ref": "InventoryApi49B09E7D"
+       },
+       "/test-invoke-stage/GET/products"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Default/products/GET/ApiPermission.Test.InventoryManagementStackInventoryApi41164A0C.GET..products"
+   }
+  },
+  "InventoryApiproductsGETAA5A341C": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "GET",
+    "ResourceId": {
+     "Ref": "InventoryApiproductsB0A4F9FA"
+    },
+    "RestApiId": {
+     "Ref": "InventoryApi49B09E7D"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ProductsFunctionFE1C163A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Default/products/GET/Resource"
+   }
+  },
+  "InventoryApiproductsPOSTApiPermissionInventoryManagementStackInventoryApi41164A0CPOSTproducts95EC5202": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ProductsFunctionFE1C163A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:396468675993:",
+       {
+        "Ref": "InventoryApi49B09E7D"
+       },
+       "/",
+       {
+        "Ref": "InventoryApiDeploymentStageprod5D1FE13B"
+       },
+       "/POST/products"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Default/products/POST/ApiPermission.InventoryManagementStackInventoryApi41164A0C.POST..products"
+   }
+  },
+  "InventoryApiproductsPOSTApiPermissionTestInventoryManagementStackInventoryApi41164A0CPOSTproductsA1264385": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ProductsFunctionFE1C163A",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:396468675993:",
+       {
+        "Ref": "InventoryApi49B09E7D"
+       },
+       "/test-invoke-stage/POST/products"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Default/products/POST/ApiPermission.Test.InventoryManagementStackInventoryApi41164A0C.POST..products"
+   }
+  },
+  "InventoryApiproductsPOST33EBF6B4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "HttpMethod": "POST",
+    "ResourceId": {
+     "Ref": "InventoryApiproductsB0A4F9FA"
+    },
+    "RestApiId": {
+     "Ref": "InventoryApi49B09E7D"
+    },
+    "AuthorizationType": "NONE",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "ProductsFunctionFE1C163A",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/InventoryApi/Default/products/POST/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WRQU/DMAyFfwv3LEB3gOs2xA0xdXCe3NQUb21c1Q7TFOW/o7QdG6f3xe/JeUoK+/xkH+7gJAtXHxctVTbuFNzRwEn2UZY2roM7oprNl59pkjUIJlOfPXRcVzZ+QNViTo2QjOPGk7KNn4LDlrnN3h9fYNMSer21pkkyBJ2NJU87sybTQlfVYONr8E6JfXZueYtDRyLEPhlZ7kEEVewqi4GeGlA8wdnGEkVXPY2Lr7hyjoNX84J9y+durnVz2ik0Y5sJShQOg8P8EOYN9ZvrbM50cedLRk7pOh5b5UXkm5x5D9oH/Zc2nmu0B7n/KQr7mL/pIESLIXilDm056S+8WRAHwgEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "InventoryManagementStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "InventoryApiEndpoint825CF96A": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "InventoryApi49B09E7D"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "InventoryApiDeploymentStageprod5D1FE13B"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "ApiGatewayUrl": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "InventoryApi49B09E7D"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "InventoryApiDeploymentStageprod5D1FE13B"
+      },
+      "/"
+     ]
+    ]
+   }
+  },
+  "UserPoolId": {
+   "Value": {
+    "Ref": "InventoryUserPoolF7E4D9E8"
+   }
+  },
+  "UserPoolClientId": {
+   "Value": {
+    "Ref": "InventoryUserPoolClient636B9E9A"
+   }
+  },
+  "DataBucketName": {
+   "Value": {
+    "Ref": "InventoryDataBucket1B7C2A3C"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

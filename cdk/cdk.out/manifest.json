@@ -1,0 +1,279 @@
+{
+  "version": "32.0.0",
+  "artifacts": {
+    "InventoryManagementStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "InventoryManagementStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "InventoryManagementStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://396468675993/us-east-1",
+      "properties": {
+        "templateFile": "InventoryManagementStack.template.json",
+        "tags": {
+          "Environment": "development",
+          "ManagedBy": "AWS-CDK",
+          "Owner": "InventoryTeam",
+          "Project": "InventoryManagement"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::396468675993:role/cdk-hnb659fds-deploy-role-396468675993-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::396468675993:role/cdk-hnb659fds-cfn-exec-role-396468675993-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-396468675993-us-east-1/e51bdea71a5158c1fd986aeaa3a803a10a74c07b5f4e7b99ecee6d6a2706b10d.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "InventoryManagementStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::396468675993:role/cdk-hnb659fds-lookup-role-396468675993-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "InventoryManagementStack.assets"
+      ],
+      "metadata": {
+        "/InventoryManagementStack": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "Environment",
+                "Value": "development"
+              },
+              {
+                "Key": "ManagedBy",
+                "Value": "AWS-CDK"
+              },
+              {
+                "Key": "Owner",
+                "Value": "InventoryTeam"
+              },
+              {
+                "Key": "Project",
+                "Value": "InventoryManagement"
+              }
+            ]
+          }
+        ],
+        "/InventoryManagementStack/InventoryDataBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryDataBucket1B7C2A3C"
+          }
+        ],
+        "/InventoryManagementStack/ProductsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "ProductsTable241ADBFF"
+            }
+          }
+        ],
+        "/InventoryManagementStack/ProductsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductsTable241ADBFF"
+          }
+        ],
+        "/InventoryManagementStack/SalesDataTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "SalesDataTable497C4A8D"
+            }
+          }
+        ],
+        "/InventoryManagementStack/SalesDataTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SalesDataTable497C4A8D"
+          }
+        ],
+        "/InventoryManagementStack/ForecastsTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "ForecastsTable40A833D2"
+            }
+          }
+        ],
+        "/InventoryManagementStack/ForecastsTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ForecastsTable40A833D2"
+          }
+        ],
+        "/InventoryManagementStack/InventoryUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryUserPoolF7E4D9E8"
+          }
+        ],
+        "/InventoryManagementStack/InventoryUserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryUserPoolClient636B9E9A"
+          }
+        ],
+        "/InventoryManagementStack/LambdaExecutionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaExecutionRoleD5C26073"
+          }
+        ],
+        "/InventoryManagementStack/ProductsFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProductsFunctionFE1C163A"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApi49B09E7D"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiCloudWatchRoleA9D47253"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiAccount7172A26A"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiDeployment382203FBe7a939fb39143971db63948e31d94628"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiDeploymentStageprod5D1FE13B"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiEndpoint825CF96A"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiOPTIONS9CCF6FDB"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Default/products/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiproductsB0A4F9FA"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Default/products/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiproductsOPTIONS2133D49F"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Default/products/GET/ApiPermission.InventoryManagementStackInventoryApi41164A0C.GET..products": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiproductsGETApiPermissionInventoryManagementStackInventoryApi41164A0CGETproductsBE86ABFA"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Default/products/GET/ApiPermission.Test.InventoryManagementStackInventoryApi41164A0C.GET..products": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiproductsGETApiPermissionTestInventoryManagementStackInventoryApi41164A0CGETproducts79813549"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Default/products/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiproductsGETAA5A341C"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Default/products/POST/ApiPermission.InventoryManagementStackInventoryApi41164A0C.POST..products": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiproductsPOSTApiPermissionInventoryManagementStackInventoryApi41164A0CPOSTproducts95EC5202"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Default/products/POST/ApiPermission.Test.InventoryManagementStackInventoryApi41164A0C.POST..products": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiproductsPOSTApiPermissionTestInventoryManagementStackInventoryApi41164A0CPOSTproductsA1264385"
+          }
+        ],
+        "/InventoryManagementStack/InventoryApi/Default/products/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InventoryApiproductsPOST33EBF6B4"
+          }
+        ],
+        "/InventoryManagementStack/ApiGatewayUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiGatewayUrl"
+          }
+        ],
+        "/InventoryManagementStack/UserPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolId"
+          }
+        ],
+        "/InventoryManagementStack/UserPoolClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClientId"
+          }
+        ],
+        "/InventoryManagementStack/DataBucketName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataBucketName"
+          }
+        ],
+        "/InventoryManagementStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/InventoryManagementStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/InventoryManagementStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "InventoryManagementStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
