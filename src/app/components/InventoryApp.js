@@ -4,12 +4,16 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { 
   Package, TrendingUp, AlertTriangle, DollarSign, Calendar, Download, Upload, Search, Filter, 
   MoreVertical, Eye, Edit, Trash2, Plus, RefreshCw, Bell, Settings, User, Home, BarChart3,Database,
-  ShoppingCart, Truck, Warehouse, MapPin, Clock, CheckCircle, XCircle, AlertCircle, Brain
+  ShoppingCart, Truck, Warehouse, MapPin, Clock, CheckCircle, XCircle, AlertCircle, Brain,Zap
 } from 'lucide-react';
 import ERPWarehouseManagement from './erp/ERPWarehouseManagement';
 import ERPSupplierManagement from './erp/ERPSupplierManagement';
 import ERPOrdersManagement from './erp/ERPOrdersManagement';
 import ERPReportsAnalytics from './erp/ERPReportsAnalytics';
+import ERPConnectorDashboard from './ERPConnector';
+import SupplyChainAnalytics from './SupplyChainAnalytics';
+import RealWorkingERPSystem from './RealWorkingERPSystem';
+
 // Mock TimeLLM Forecasting Component
 const TimeLLMForecastingComponent = ({ productData, onForecastUpdate }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -94,38 +98,6 @@ const TimeLLMForecastingComponent = ({ productData, onForecastUpdate }) => {
     </div>
   );
 };
-
-// Mock Advanced Analytics Component
-const AdvancedAnalytics = () => {
-  const analyticsData = [
-    { month: 'Jan', revenue: 45000, profit: 12000, orders: 890 },
-    { month: 'Feb', revenue: 52000, profit: 15600, orders: 1020 },
-    { month: 'Mar', revenue: 48000, profit: 14400, orders: 940 },
-    { month: 'Apr', revenue: 61000, profit: 18300, orders: 1180 },
-    { month: 'May', revenue: 55000, profit: 16500, orders: 1080 },
-    { month: 'Jun', revenue: 68000, profit: 20400, orders: 1320 }
-  ];
-
-  return (
-    <div className="space-y-6">
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <h3 className="text-lg font-semibold mb-4">Revenue Analytics</h3>
-        <ResponsiveContainer width="100%" height={400}>
-          <AreaChart data={analyticsData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Area type="monotone" dataKey="revenue" stackId="1" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.6} />
-            <Area type="monotone" dataKey="profit" stackId="2" stroke="#10B981" fill="#10B981" fillOpacity={0.6} />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
-  );
-};
-
 // Mock Advanced Product Management Component
 const AdvancedProductManagement = () => {
   return (
@@ -686,77 +658,6 @@ const InventoryApp = () => {
   );
 
   // Analytics Component
-  const Analytics = () => (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900">Analytics & Reporting</h2>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Demand Forecast */}
-        <div className="bg-white rounded-lg shadow-sm p-6 border">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Historical Demand</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={salesData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="sales" stroke="#3B82F6" strokeWidth={2} />
-              <Line type="monotone" dataKey="orders" stroke="#10B981" strokeWidth={2} />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Inventory Turnover */}
-        <div className="bg-white rounded-lg shadow-sm p-6 border">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Category Performance</h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={categoryData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="value" fill="#3B82F6" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* AI Insights */}
-      <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200 p-6">
-        <div className="flex items-center space-x-3 mb-4">
-          <Brain className="w-6 h-6 text-purple-600" />
-          <h3 className="text-lg font-semibold text-purple-900">AI-Powered Insights</h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white rounded-lg p-4">
-            <h4 className="font-medium text-gray-900 mb-2">Demand Prediction</h4>
-            <p className="text-sm text-gray-600">Get 7-day demand forecasts with 85%+ accuracy using Time-LLM</p>
-            <button 
-              onClick={() => setActiveTab('ai-forecasting')}
-              className="mt-2 text-purple-600 hover:text-purple-800 text-sm font-medium"
-            >
-              Start Forecasting →
-            </button>
-          </div>
-          <div className="bg-white rounded-lg p-4">
-            <h4 className="font-medium text-gray-900 mb-2">Inventory Optimization</h4>
-            <p className="text-sm text-gray-600">Optimize stock levels based on AI predictions and reduce costs</p>
-            <button className="mt-2 text-purple-600 hover:text-purple-800 text-sm font-medium">
-              Coming Soon
-            </button>
-          </div>
-          <div className="bg-white rounded-lg p-4">
-            <h4 className="font-medium text-gray-900 mb-2">Smart Alerts</h4>
-            <p className="text-sm text-gray-600">Get notified about predicted stockouts and demand spikes</p>
-            <button className="mt-2 text-purple-600 hover:text-purple-800 text-sm font-medium">
-              Coming Soon
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 
  const Sidebar = () => (
     <div className="bg-white w-64 min-h-screen shadow-lg border-r relative flex flex-col">
@@ -777,11 +678,12 @@ const InventoryApp = () => {
           { id: 'dashboard', label: 'Dashboard', icon: Home, badge: null },
           { id: 'products', label: 'Products', icon: Package, badge: null },
           { id: 'ai-forecasting', label: 'AI Forecasting', icon: Brain, badge: 'NEW', special: true },
-          { id: 'analytics', label: 'Advanced Analytics', icon: BarChart3, badge: null },
-          { id: 'orders', label: 'ERP Orders', icon: ShoppingCart, badge: null, erpIntegrated: true },
+          { id: 'analytics', label: 'Supply Chain Analytics', icon: BarChart3, badge: null },          { id: 'orders', label: 'ERP Orders', icon: ShoppingCart, badge: null, erpIntegrated: true },
           { id: 'suppliers', label: 'ERP Suppliers', icon: Truck, badge: null, erpIntegrated: true },
           { id: 'warehouses', label: 'ERP Warehouses', icon: Warehouse, badge: null, erpIntegrated: true },
           { id: 'reports', label: 'ERP Reports', icon: TrendingUp, badge: null, erpIntegrated: true },
+          { id: 'real-erp', label: 'Real ERP System', icon: Zap, badge: 'LIVE', special: true },
+          { id: 'erp-hub', label: 'ERP Integration Hub', icon: Zap, badge: 'LIVE', special: true },
           { id: 'settings', label: 'Settings', icon: Settings, badge: null }
         ].map(item => {
           const Icon = item.icon;
@@ -836,36 +738,40 @@ const InventoryApp = () => {
     </div>
   );
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'dashboard': 
-        return <Dashboard />; // Your existing dashboard
-      case 'products': 
-        return <Products />; // Your existing products
-      case 'ai-forecasting': 
-        return <TimeLLMForecastingComponent productData={productData} onForecastUpdate={handleForecastUpdate} />;
-      case 'analytics': 
-        return <Analytics />; // Your existing analytics
-      case 'orders':
-        return <ERPOrdersManagement />;
-      case 'suppliers':
-        return <ERPSupplierManagement />;
-      case 'warehouses':
-        return <ERPWarehouseManagement />;
-      case 'reports':
-        return <ERPReportsAnalytics />;
-      default: 
-        return (
-          <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Settings className="w-8 h-8 text-gray-400" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Coming Soon</h2>
-            <p className="text-gray-600 mb-4">This section is under development.</p>
+ const renderContent = () => {
+  switch (activeTab) {
+    case 'dashboard': 
+      return <Dashboard />;
+    case 'products': 
+      return <Products />;
+    case 'ai-forecasting': 
+      return <TimeLLMForecastingComponent productData={productData} onForecastUpdate={handleForecastUpdate} />;
+    case 'analytics': 
+      return <SupplyChainAnalytics />; // Changed from <Analytics /> to <SupplyChainAnalytics />
+    case 'orders':
+      return <ERPOrdersManagement />;
+    case 'suppliers':
+      return <ERPSupplierManagement />;
+    case 'warehouses':
+      return <ERPWarehouseManagement />;
+    case 'reports':
+      return <ERPReportsAnalytics />;
+        case 'real-erp':
+      return <RealWorkingERPSystem />;
+    case 'erp-hub': 
+      return <ERPConnectorDashboard />;
+    default: 
+      return (
+        <div className="bg-white rounded-lg shadow-sm border p-8 text-center">
+          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Settings className="w-8 h-8 text-gray-400" />
           </div>
-        );
-    }
-  };
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Coming Soon</h2>
+          <p className="text-gray-600 mb-4">This section is under development.</p>
+        </div>
+      );
+  }
+};
 
  return (
     <div className="flex min-h-screen bg-gray-50">
@@ -880,8 +786,8 @@ const InventoryApp = () => {
                 <h1 className="text-2xl font-bold text-gray-900">
                   {activeTab === 'ai-forecasting' ? 'AI Forecasting' : 
                    activeTab === 'products' ? 'Product Management' :
-                   activeTab === 'analytics' ? 'Advanced Analytics' :
-                   activeTab === 'orders' ? 'ERP Order Management' :
+                  activeTab === 'analytics' ? 'Supply Chain Analytics':
+                      activeTab === 'orders' ? 'ERP Order Management' :
                    activeTab === 'suppliers' ? 'ERP Supplier Management' :
                    activeTab === 'warehouses' ? 'ERP Warehouse Management' :
                    activeTab === 'reports' ? 'ERP Reports & Analytics' :
